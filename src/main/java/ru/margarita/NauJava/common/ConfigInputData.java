@@ -21,33 +21,8 @@ public class ConfigInputData {
     private String appName;
     @Value("${app.version:-1}")
     private int appVersion;
-    @Autowired
-    private CommandProcessor commandProcessor;
-
     @PostConstruct
     private void printAppInfo() {
         System.out.println("имя приложения: " + appName + " версия: " + appVersion);
-    }
-
-    @Bean
-    public CommandLineRunner commandScanner() {
-        return args ->
-        {
-            try (Scanner scanner = new Scanner(System.in)) {
-                System.out.println("Введите команду. 'exit' для выхода.\n'info' для получении информации о всех командах.");
-                while (true) {
-                    // Показать приглашение для ввода
-                    System.out.print("> ");
-                    String input = scanner.nextLine();
-                    // Выход из цикла, если введена команда "exit"
-                    if ("exit".equalsIgnoreCase(input.trim())) {
-                        System.out.println("Выход из программы...");
-                        break;
-                    }
-                    // Обработка команды
-                    commandProcessor.processCommand(input);
-                }
-            }
-        };
     }
 }
