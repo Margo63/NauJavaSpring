@@ -1,57 +1,75 @@
 package ru.margarita.NauJava.domain;
 
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
-import ru.margarita.NauJava.data.TaskCrudRepository;
-import ru.margarita.NauJava.data.TaskRepository;
-import ru.margarita.NauJava.model.Task;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.DefaultTransactionDefinition;
+import ru.margarita.NauJava.data.repositories.TaskRepository;
+import ru.margarita.NauJava.data.repositories.UserRepository;
+import ru.margarita.NauJava.entities.Task;
+
 import java.util.List;
 
 /**
  * Реализация {@link TaskService}
  *
  * @author Margarita
- * @version 1.0
- * @since 2025-10-13
+ * @version 2.0
+ * @since 2025-10-31
  */
 @Service
-public class TaskServiceImpl implements TaskService
-{
-    private final TaskCrudRepository<Task,Long> taskRepository;
+public class TaskServiceImpl implements TaskService {
+    private final TaskRepository taskRepository;
+    private final UserRepository userRepository;
+    private final PlatformTransactionManager transactionManager;
 
     @Autowired
-    public TaskServiceImpl(TaskRepository taskRepository)
-    {
+    public TaskServiceImpl(TaskRepository taskRepository, UserRepository userRepository,
+                           PlatformTransactionManager transactionManager) {
         this.taskRepository = taskRepository;
+        this.userRepository = userRepository;
+        this.transactionManager = transactionManager;
+    }
+
+    @Transactional
+    @Override
+    public void deleteUserByName(String name) {
+        // удалить все задачи связанные с пользователем
+        List<Task> tasks = taskRepository.findTasksByUserName(name);
+        for (Task task : tasks) {
+            taskRepository.delete(task);
+        }
+        // удалить пользователя
+        userRepository.deleteByName(name);
     }
 
     @Override
     public boolean createTask(Long id, String title, String description) {
-        Task newTask = new Task(id, title, description);
-        return taskRepository.create(newTask);
+        return false;
     }
 
     @Override
-    public Task findById(Long id)
-    {
-        return taskRepository.read(id);
+    public Task findById(Long id) {
+        return null;
     }
 
     @Override
-    public boolean deleteById(Long id)
-    {
-        return taskRepository.delete(id);
+    public boolean deleteById(Long id) {
+        return false;
     }
 
     @Override
     public boolean updateTitle(Long id, String newTitle) {
-        Task task = findById(id);
-        task.setTitle(newTitle);
-        return taskRepository.update(task);
+        return false;
     }
 
     @Override
     public List<Task> getAll() {
-        return taskRepository.getAll();
+        return List.of();
     }
+
+
 }

@@ -1,14 +1,14 @@
 package ru.margarita.NauJava.domain;
 
-import ru.margarita.NauJava.model.Task;
+import ru.margarita.NauJava.entities.Task;
 import java.util.List;
 
 /**
  * Класс сервис для взаимодействия с бд через слой данных
  *
  * @author Margarita
- * @version 1.0
- * @since 2025-10-13
+ * @version 2.0
+ * @since 2025-10-21
  */
 public interface TaskService
 {
@@ -17,4 +17,5 @@ public interface TaskService
     boolean deleteById(Long id);
     boolean updateTitle(Long id, String newTitle);
     List<Task> getAll();
+    void deleteUserByName(String name);
 }
