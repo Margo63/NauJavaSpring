@@ -6,8 +6,8 @@ import jakarta.persistence.*;
  * описание пользователя
  *
  * @author Margarita
- * @version 1.0
- * @since 2025-10-21
+ * @version 2.0
+ * @since 2025-11-2
  */
 @Entity
 @Table(name = "tbl_users")
@@ -16,23 +16,24 @@ public class User
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String name;
     @Column(nullable = false, unique = true)
     private String email;
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String password;
+
+    @Column(nullable = false)
+    private Boolean isAdmin = false;
 
     public User() {
     }
 
     public User(String name) {
-        this.id = id;
         this.name = name;
     }
 
     public User(String name, String email, String password) {
-        this.id = id;
         this.name = name;
         this.email = email;
         this.password = password;
@@ -41,10 +42,6 @@ public class User
     public Long getId()
     {
         return id;
-    }
-    public void setId(Long id)
-    {
-        this.id = id;
     }
     public String getName()
     {
@@ -69,5 +66,13 @@ public class User
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public Boolean getAdmin() {
+        return isAdmin;
+    }
+
+    public void setAdmin(Boolean admin) {
+        isAdmin = admin;
     }
 }

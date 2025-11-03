@@ -1,4 +1,4 @@
-package ru.margarita.NauJava.domain.controllers;
+package ru.margarita.NauJava.controllers;
 
 /**
  * Класс обертки ошибок (не найден ресурс и внутренней ошибки сервера)

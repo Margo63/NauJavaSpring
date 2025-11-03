@@ -24,14 +24,11 @@ import java.util.List;
 public class TaskServiceImpl implements TaskService {
     private final TaskRepository taskRepository;
     private final UserRepository userRepository;
-    private final PlatformTransactionManager transactionManager;
 
     @Autowired
-    public TaskServiceImpl(TaskRepository taskRepository, UserRepository userRepository,
-                           PlatformTransactionManager transactionManager) {
+    public TaskServiceImpl(TaskRepository taskRepository, UserRepository userRepository) {
         this.taskRepository = taskRepository;
         this.userRepository = userRepository;
-        this.transactionManager = transactionManager;
     }
 
     @Transactional
@@ -70,6 +67,4 @@ public class TaskServiceImpl implements TaskService {
     public List<Task> getAll() {
         return List.of();
     }
-
-
 }
