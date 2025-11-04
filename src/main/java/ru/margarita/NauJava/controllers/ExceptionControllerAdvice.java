@@ -1,4 +1,4 @@
-package ru.margarita.NauJava.domain.controllers;
+package ru.margarita.NauJava.controllers;
 
 import io.swagger.v3.oas.annotations.Hidden;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;

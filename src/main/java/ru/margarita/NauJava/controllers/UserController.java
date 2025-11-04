@@ -1,4 +1,4 @@
-package ru.margarita.NauJava.domain.controllers;
+package ru.margarita.NauJava.controllers;
 
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +28,12 @@ public class UserController {
     public List<User> findByEmailAndPassword(@RequestParam String email, @RequestParam String password)
     {
         return userRepository.findByEmailAndPassword(email,password);
+    }
+    @PostMapping("/addUser")
+    public void addUser(@RequestParam String name,@RequestParam String email, @RequestParam String password)
+    {
+        User user = new User(name,email,password);
+        userRepository.save(user);
     }
     @Transactional
     @DeleteMapping("/deleteByName")
