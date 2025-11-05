@@ -5,7 +5,6 @@ import jakarta.persistence.criteria.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import ru.margarita.NauJava.data.criteria_repo.TaskRepositoryCustom;
-import ru.margarita.NauJava.data.criteria_repo.UserRepositoryCustom;
 import ru.margarita.NauJava.entities.Task;
 import ru.margarita.NauJava.entities.User;
 
