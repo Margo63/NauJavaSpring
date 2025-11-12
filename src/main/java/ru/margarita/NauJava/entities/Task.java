@@ -7,8 +7,8 @@ import java.util.Date;
  * описание задачи
  *
  * @author Margarita
- * @version 1.0
- * @since 2025-10-21
+ * @version 2.0
+ * @since 2025-11-11
  */
 
 @Entity
@@ -24,8 +24,6 @@ public class Task
     private String description;
     @Column
     private Date dueDate;
-    @Column
-    private int timer;
 
     @ManyToOne
     private User user;
@@ -69,14 +67,6 @@ public class Task
 
     public void setDueDate(Date dueDate) {
         this.dueDate = dueDate;
-    }
-
-    public int getTimer() {
-        return timer;
-    }
-
-    public void setTimer(int timer) {
-        this.timer = timer;
     }
 
     public User getUser() {

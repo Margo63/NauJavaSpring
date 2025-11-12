@@ -15,16 +15,14 @@ import ru.margarita.NauJava.domain.UserDetailServiceImpl;
  * Класс конфигурации SpringSecurity
  *
  * @author Margarita
- * @version 1.0
- * @since 2025-11-2
+ * @version 2.0
+ * @since 2025-11-11
  */
 @Configuration
 @EnableWebSecurity
 public class SpringSecurityConfig
 {
-    @Autowired
-    private UserDetailServiceImpl userDetailService;
-
+    final private String ADMIN = "ADMIN";
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -35,8 +33,9 @@ public class SpringSecurityConfig
         http
                 .authorizeHttpRequests(authz -> authz
                         .requestMatchers("/login", "/registration").permitAll()
-                        .requestMatchers("/swagger-ui/**").hasRole("ADMIN")
-                        .requestMatchers("/custom/users/**").hasAnyRole("ADMIN", "USER")
+                        .requestMatchers("/swagger-ui/**").hasRole(ADMIN)
+                        .requestMatchers("/custom/users/**").hasAnyRole(ADMIN, "USER")
+                        .requestMatchers("/reports/**").hasRole(ADMIN)
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
@@ -46,14 +45,14 @@ public class SpringSecurityConfig
                 .logout(LogoutConfigurer::permitAll)
 
         ;
-        http
-                .csrf(csrf -> csrf
+        http.csrf(csrf -> csrf
                         .ignoringRequestMatchers(
-                                "/swagger-ui/",
+                                "/swagger-ui/**",
                                 "/v3/api-docs/",
                                 "/swagger-ui.html"
                         )
                 );
         return http.build();
+
     }
 }
