@@ -45,13 +45,7 @@ public class SpringSecurityConfig
                 .logout(LogoutConfigurer::permitAll)
 
         ;
-        http.csrf(csrf -> csrf
-                        .ignoringRequestMatchers(
-                                "/swagger-ui/**",
-                                "/v3/api-docs/",
-                                "/swagger-ui.html"
-                        )
-                );
+        http.csrf().disable();
         return http.build();
 
     }

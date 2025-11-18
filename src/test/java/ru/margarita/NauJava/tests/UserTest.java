@@ -1,7 +1,9 @@
 package ru.margarita.NauJava.tests;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,28 +17,28 @@ import ru.margarita.NauJava.entities.Task;
 import ru.margarita.NauJava.entities.User;
 
 @SpringBootTest
-public class UserTest {
+class UserTest {
     private final UserRepository userRepository;
     private final UserRepositoryCustom userRepositoryCustom;
     private final TaskRepositoryCustom taskRepositoryCustom;
     public final TaskRepository taskRepository;
     public final TaskService taskService;
+
     @Autowired
-    UserTest(UserRepository userRepository, UserRepositoryCustom userRepositoryCustom, TaskRepositoryCustom taskRepositoryCustom, TaskRepository taskRepository, TaskService taskService)
-    {
+    UserTest(UserRepository userRepository, UserRepositoryCustom userRepositoryCustom, TaskRepositoryCustom taskRepositoryCustom, TaskRepository taskRepository, TaskService taskService) {
         this.userRepository = userRepository;
         this.userRepositoryCustom = userRepositoryCustom;
         this.taskRepositoryCustom = taskRepositoryCustom;
         this.taskRepository = taskRepository;
         this.taskService = taskService;
     }
+
     /**
      * Тестирование поиск пользователя по его имени
      * положительный
      */
     @Test
-    void testFindUserByNamePositive()
-    {
+    void testFindUserByNamePositive() {
         //создание пользователя
         User user = createUserRandomName();
         // поиск пользователя по имени
@@ -52,8 +54,7 @@ public class UserTest {
      * отрицательный
      */
     @Test
-    void testFindUserByNameNegative()
-    {
+    void testFindUserByNameNegative() {
         //поиск не существующего пользователя
         List<User> foundUser = userRepository.findByName("Not John");
         //проверка
@@ -65,14 +66,14 @@ public class UserTest {
      * положительный
      */
     @Test
-    void testFindByEmailAndPasswordPositive(){
+    void testFindByEmailAndPasswordPositive() {
         //создание пользователя
         String email = "mail@mail.com";
         String password = "1111";
         User user = createUserWithEmailAndPassword(email, password);
 
         //поиск по почте и паролю
-        User foundUser = userRepository.findByEmailAndPassword(email,password).getFirst();
+        User foundUser = userRepository.findByEmailAndPassword(email, password).getFirst();
         //проверка
         Assertions.assertEquals(user.getEmail(), foundUser.getEmail());
     }
@@ -82,7 +83,7 @@ public class UserTest {
      * отрицательный
      */
     @Test
-    void testFindByEmailAndPasswordNegative(){
+    void testFindByEmailAndPasswordNegative() {
         //создание пользователя
         String email = "mail";
         String password = "222";
@@ -98,10 +99,10 @@ public class UserTest {
      * положительный
      */
     @Test
-    void testFindTasksByUserNamePositive(){
+    void testFindTasksByUserNamePositive() {
         //создание пользователя с задачей
         User user = createUserRandomName();
-        Task task = createTask(user,"task1");
+        Task task = createTask(user, "task1");
         //поиск задач по имени пользователя
         Task foundTask = taskRepository.findTasksByUserName(user.getName()).getFirst();
         //проверка
@@ -113,7 +114,7 @@ public class UserTest {
      * положительный
      */
     @Test
-    void testFindTasksByUserNameNegative(){
+    void testFindTasksByUserNameNegative() {
         //создание пользователя
         User user = createUserRandomName();
         //поиск задач по имени
@@ -121,18 +122,19 @@ public class UserTest {
         //проверка
         Assertions.assertTrue(foundTask.isEmpty());
     }
+
     /**
      * Тестирование функций реализованных с помощью CriteriaApi
      */
     @Test
-    void testCriteria(){
+    void testCriteria() {
         //создание пользователя и задачи
         User user = createUserRandomName();
-        Task task = createTask(user,"taskCriteria");
+        Task task = createTask(user, "taskCriteria");
 
         //поиск с существущими параметрами
         User foundUserName = userRepositoryCustom.findByName(user.getName()).getFirst();
-        User foundUserEmail = userRepositoryCustom.findByEmailAndPassword(user.getEmail(),user.getPassword()).getFirst();
+        User foundUserEmail = userRepositoryCustom.findByEmailAndPassword(user.getEmail(), user.getPassword()).getFirst();
         Task foundTask = taskRepositoryCustom.findTasksByUserName(user.getName()).getFirst();
 
         //поиск по несуществующем параметрам
@@ -150,11 +152,12 @@ public class UserTest {
         Assertions.assertTrue(foundUserEmailNeg.isEmpty());
         Assertions.assertTrue(foundTaskNeg.isEmpty());
     }
+
     /**
      * Тестирование удаления задач при удалении пользователя
      */
     @Test
-    void testDelete(){
+    void testDelete() {
         //создание пользователя и задач
         User user = createUserRandomName();
         Task task1 = createTask(user, "delete1");
@@ -189,15 +192,17 @@ public class UserTest {
         Assertions.assertFalse(foundTaskD1.isEmpty());
         Assertions.assertFalse(foundTaskD2.isEmpty());
     }
-    private User createUserRandomName(){
+
+    private User createUserRandomName() {
         // генерация имени пользователя
         String userName = UUID.randomUUID().toString();
         // создание пользователя
-        User user = new User(userName, UUID.randomUUID().toString(),UUID.randomUUID().toString());
+        User user = new User(userName, UUID.randomUUID().toString(), UUID.randomUUID().toString());
         userRepository.save(user);
         return user;
     }
-    private User createUserWithEmailAndPassword(String email, String password){
+
+    private User createUserWithEmailAndPassword(String email, String password) {
         // генерация имени пользователя
         String userName = UUID.randomUUID().toString();
         // создание пользователя
@@ -205,7 +210,8 @@ public class UserTest {
         userRepository.save(user);
         return user;
     }
-    private Task createTask(User user,String title){
+
+    private Task createTask(User user, String title) {
         Task task1 = new Task(title, user);
         taskRepository.save(task1);
         return task1;
